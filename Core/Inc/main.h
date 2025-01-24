@@ -59,8 +59,8 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED_USER_Pin GPIO_PIN_13
 #define LED_USER_GPIO_Port GPIOC
-#define RS485_RE_Pin GPIO_PIN_4
-#define RS485_RE_GPIO_Port GPIOA
+#define RS485_DE_Pin GPIO_PIN_1
+#define RS485_DE_GPIO_Port GPIOA
 #define BUTTON_USER_Pin GPIO_PIN_11
 #define BUTTON_USER_GPIO_Port GPIOA
 
