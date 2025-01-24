@@ -22,6 +22,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
+#include <ModbusRTU_Slave.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -94,6 +95,10 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   printf("testModbus\r\n");
+
+  HAL_UART_Receive_IT(&huart2 , &uartRxData , 1);
+  ModbusRegister[0] = 10;
+  ModbusCoil[0] = 1;  
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,6 +109,8 @@ int main(void)
       HAL_GPIO_WritePin(LED_USER_GPIO_Port, LED_USER_Pin, GPIO_PIN_SET);
     else
       HAL_GPIO_WritePin(LED_USER_GPIO_Port, LED_USER_Pin, GPIO_PIN_RESET);
+
+ 	  uartDataHandler();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
