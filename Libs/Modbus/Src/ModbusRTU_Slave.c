@@ -106,13 +106,23 @@ void uartTimer(void)
 {
 	if(RxInterruptFlag == SET)
 	{
-		if(uartTimeCounter++ > 100)
+		if(uartTimeCounter++ > 50)
 		{
+			HAL_GPIO_WritePin(RS485_DE_GPIO_Port, RS485_DE_Pin, GPIO_PIN_SET);
 
 			RxInterruptFlag = RESET;
 			uartTimeCounter = 0;
 			uartPacketComplatedFlag = SET;
 		}
+	}
+	else {
+		if(uartTimeCounter++ > 50)
+		{
+			HAL_GPIO_WritePin(RS485_DE_GPIO_Port, RS485_DE_Pin, GPIO_PIN_RESET);
+
+			uartTimeCounter = 0;
+		}
+
 	}
 }
 

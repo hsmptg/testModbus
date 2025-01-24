@@ -61,7 +61,7 @@ void Error_Handler(void);
 #define LED_USER_GPIO_Port GPIOC
 #define RS485_DE_Pin GPIO_PIN_1
 #define RS485_DE_GPIO_Port GPIOA
-#define BUTTON_USER_Pin GPIO_PIN_11
+#define BUTTON_USER_Pin GPIO_PIN_8
 #define BUTTON_USER_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
