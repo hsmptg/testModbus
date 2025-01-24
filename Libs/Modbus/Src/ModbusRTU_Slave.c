@@ -4,7 +4,7 @@
  *  Created on: Feb 10, 2022
  *      Author: Ümit Can Güveren
  */
-#include <ModbusRTU_Slave.h>
+#include "ModbusRTU_Slave.h"
 #include "main.h"
 
 uint8_t uartRxData;
@@ -12,6 +12,9 @@ uint8_t DataCounter;
 uint8_t RxInterruptFlag;
 uint8_t uartTimeCounter;
 uint8_t uartPacketComplatedFlag;
+
+uint16_t ModbusRegister[NUMBER_OF_REGISTER];
+bool ModbusCoil[NUMBER_OF_COIL];
 
 char ModbusRx[BUFFERSIZE];
 char tempModbusRx[BUFFERSIZE];

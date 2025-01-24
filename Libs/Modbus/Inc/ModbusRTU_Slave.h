@@ -20,8 +20,8 @@
 #define NUMBER_OF_COIL 30
 #define BUFFERSIZE (NUMBER_OF_REGISTER * 2 + 5)
 
-uint16_t ModbusRegister[NUMBER_OF_REGISTER];
-bool ModbusCoil[NUMBER_OF_COIL];
+extern uint16_t ModbusRegister[NUMBER_OF_REGISTER];
+extern bool ModbusCoil[NUMBER_OF_COIL];
 
 enum
 {
