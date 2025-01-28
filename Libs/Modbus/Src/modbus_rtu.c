@@ -41,14 +41,14 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
       dataIndex = 0;
       if (uartRxData == SLAVE) {
         ModbusRx[dataIndex++] = uartRxData;
-        printf("Slave %d\r\n", uartRxData);
+        // printf("Slave %d\r\n", uartRxData);
         state = 1;
         getByte();
       }
       break;
     case 1:
       ModbusRx[dataIndex++] = uartRxData;
-      printf("Func %d\r\n", uartRxData);
+      // printf("Func %d\r\n", uartRxData);
       switch (uartRxData) {
         case 2:
           dataLen = 8;

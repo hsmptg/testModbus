@@ -61,6 +61,10 @@ void Error_Handler(void);
 #define LED_USER_GPIO_Port GPIOC
 #define RS485_DE_Pin GPIO_PIN_1
 #define RS485_DE_GPIO_Port GPIOA
+#define SS_Pin GPIO_PIN_4
+#define SS_GPIO_Port GPIOA
+#define PN532_RST_Pin GPIO_PIN_0
+#define PN532_RST_GPIO_Port GPIOB
 #define BUTTON_USER_Pin GPIO_PIN_8
 #define BUTTON_USER_GPIO_Port GPIOA
 
