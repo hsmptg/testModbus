@@ -41,14 +41,12 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
       dataIndex = 0;
       if (uartRxData == SLAVE) {
         ModbusRx[dataIndex++] = uartRxData;
-        // printf("Slave %d\r\n", uartRxData);
         state = 1;
         getByte();
       }
       break;
     case 1:
       ModbusRx[dataIndex++] = uartRxData;
-      // printf("Func %d\r\n", uartRxData);
       switch (uartRxData) {
         case 2:
           dataLen = 8;
@@ -101,10 +99,6 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
   UNUSED(huart);
 
   modbus_init();
-
-  // HAL_GPIO_WritePin(RS485_DE_GPIO_Port, RS485_DE_Pin, GPIO_PIN_RESET);
-  // state = 0;
-  // getByte();
 }
 
 uint16_t MODBUS_CRC16(char *buf, uint8_t len)
@@ -135,7 +129,6 @@ void sendReply(uint8_t slave, uint8_t func, uint16_t addr, uint16_t count)
   char ModbusTx[20];
 	uint16_t CRCValue;
 
-  // printf("%d %d %d %d\r\n", slave, func, addr, count);
   ModbusTx[0] = slave;
   ModbusTx[1] = func;
 

@@ -6,9 +6,9 @@
 
 #define UNUSED(x) (void)(x)
 
-#define SLAVE 5
-#define N_DISCRETE_INPUTS 10
-#define N_INPUT_REGISTERS 10
+#define SLAVE 1
+#define N_DISCRETE_INPUTS 1
+#define N_INPUT_REGISTERS 4
 
 extern bool discreteInputs[N_DISCRETE_INPUTS];
 extern uint16_t inputRegisters[N_INPUT_REGISTERS];

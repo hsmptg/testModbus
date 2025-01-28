@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include "modbus_rtu.h"
 #include "pn532_stm32.h"
+#include "dash.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -45,6 +46,7 @@
 SPI_HandleTypeDef hspi1;
 
 TIM_HandleTypeDef htim3;
+TIM_HandleTypeDef htim4;
 
 UART_HandleTypeDef huart1;
 UART_HandleTypeDef huart2;
@@ -60,6 +62,7 @@ static void MX_USART1_UART_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM3_Init(void);
 static void MX_SPI1_Init(void);
+static void MX_TIM4_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -104,21 +107,19 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM3_Init();
   MX_SPI1_Init();
+  MX_TIM4_Init();
   /* USER CODE BEGIN 2 */
   printf("testModbus\r\n");
+  // Power
   discreteInputs[0] = false;
-  discreteInputs[1] = false;
-  discreteInputs[2] = true;
-  discreteInputs[3] = false;
-  discreteInputs[4] = false;
-  discreteInputs[5] = false;
-  discreteInputs[6] = false;
-  discreteInputs[7] = true;
-  discreteInputs[8] = true;
-  discreteInputs[9] = false;
 
-  inputRegisters[0] = 0x2211;
-  inputRegisters[1] = 0x4433;
+  // RFID
+  inputRegisters[0] = 0;
+  inputRegisters[1] = 0;
+  // Parts
+  inputRegisters[2] = 0;
+  // Errors
+  inputRegisters[3] = 0;
  
   modbus_init();
 
@@ -150,16 +151,13 @@ int main(void)
         }
         inputRegisters[0] = (uid[0]<<8) + uid[1];
         inputRegisters[1] = (uid[2]<<8) + uid[3];
+        inputRegisters[2] = 0;
+        inputRegisters[3] = 0;
         printf("\r\n");
       }
     }
 
-    // if (HAL_GPIO_ReadPin(BUTTON_USER_GPIO_Port, BUTTON_USER_Pin))
-    //   HAL_GPIO_WritePin(LED_USER_GPIO_Port, LED_USER_Pin, GPIO_PIN_SET);
-    // else
-    //   HAL_GPIO_WritePin(LED_USER_GPIO_Port, LED_USER_Pin, GPIO_PIN_RESET);
-
- 	  // uartDataHandler();
+    dashLoop();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -296,6 +294,51 @@ static void MX_TIM3_Init(void)
 }
 
 /**
+  * @brief TIM4 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM4_Init(void)
+{
+
+  /* USER CODE BEGIN TIM4_Init 0 */
+
+  /* USER CODE END TIM4_Init 0 */
+
+  TIM_ClockConfigTypeDef sClockSourceConfig = {0};
+  TIM_MasterConfigTypeDef sMasterConfig = {0};
+
+  /* USER CODE BEGIN TIM4_Init 1 */
+
+  /* USER CODE END TIM4_Init 1 */
+  htim4.Instance = TIM4;
+  htim4.Init.Prescaler = 100-1;
+  htim4.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim4.Init.Period = 500-1;
+  htim4.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim4.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sClockSourceConfig.ClockSource = TIM_CLOCKSOURCE_INTERNAL;
+  if (HAL_TIM_ConfigClockSource(&htim4, &sClockSourceConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  sMasterConfig.MasterOutputTrigger = TIM_TRGO_RESET;
+  sMasterConfig.MasterSlaveMode = TIM_MASTERSLAVEMODE_DISABLE;
+  if (HAL_TIMEx_MasterConfigSynchronization(&htim4, &sMasterConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM4_Init 2 */
+
+  /* USER CODE END TIM4_Init 2 */
+
+}
+
+/**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
@@ -420,6 +463,22 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   HAL_GPIO_Init(BUTTON_USER_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PinX_Pin */
+  GPIO_InitStruct.Pin = PinX_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(PinX_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Pin5_Pin Pin3_Pin Pin4_Pin Pin6_Pin */
+  GPIO_InitStruct.Pin = Pin5_Pin|Pin3_Pin|Pin4_Pin|Pin6_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+  /* EXTI interrupt init*/
+  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

@@ -67,6 +67,17 @@ void Error_Handler(void);
 #define PN532_RST_GPIO_Port GPIOB
 #define BUTTON_USER_Pin GPIO_PIN_8
 #define BUTTON_USER_GPIO_Port GPIOA
+#define PinX_Pin GPIO_PIN_3
+#define PinX_GPIO_Port GPIOB
+#define PinX_EXTI_IRQn EXTI3_IRQn
+#define Pin5_Pin GPIO_PIN_4
+#define Pin5_GPIO_Port GPIOB
+#define Pin3_Pin GPIO_PIN_5
+#define Pin3_GPIO_Port GPIOB
+#define Pin4_Pin GPIO_PIN_6
+#define Pin4_GPIO_Port GPIOB
+#define Pin6_Pin GPIO_PIN_7
+#define Pin6_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 
