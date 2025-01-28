@@ -16,7 +16,6 @@ uint32_t pins;
 
 void cb500us(void) {
   HAL_TIM_Base_Stop_IT(&htim4);
-  HAL_GPIO_TogglePin(LED_USER_GPIO_Port, LED_USER_Pin);
 
   pins = HAL_GPIO_ReadPin(Pin6_GPIO_Port, Pin6_Pin) ? 0 : 1;
   pins <<= 1;

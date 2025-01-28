@@ -53,14 +53,17 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Libs/RFID/Src/pn532_stm32.c
     ${CMAKE_SOURCE_DIR}/Libs/RFID/Src/pn532.c    
     ${CMAKE_SOURCE_DIR}/Libs/Dash/Src/dash.c    
+    ${CMAKE_SOURCE_DIR}/Libs/Util/Src/leds.c    
+    ${CMAKE_SOURCE_DIR}/Libs/Util/Src/sound.c    
 )
 
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
     ${CMAKE_SOURCE_DIR}/Libs/Modbus/Inc
-    ${CMAKE_SOURCE_DIR}/Libs/RFID/Inc    
-    ${CMAKE_SOURCE_DIR}/Libs/Dash/Inc    
+    ${CMAKE_SOURCE_DIR}/Libs/RFID/Inc
+    ${CMAKE_SOURCE_DIR}/Libs/Dash/Inc
+    ${CMAKE_SOURCE_DIR}/Libs/Util/Inc
 )
 
 # Add project symbols (macros)
