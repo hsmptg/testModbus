@@ -113,10 +113,9 @@ int main(void)
   MX_SPI1_Init();
   MX_TIM4_Init();
   MX_TIM11_Init();
-  
   /* USER CODE BEGIN 2 */
   printf("testModbus\r\n");
-
+  set_slaveID();
   set_led(LED_STATUS, LED_HEART);
 
   // Power
@@ -513,6 +512,12 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(PN532_RST_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : ADDR0_Pin ADDR1_Pin */
+  GPIO_InitStruct.Pin = ADDR0_Pin|ADDR1_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /*Configure GPIO pin : BUTTON_USER_Pin */
   GPIO_InitStruct.Pin = BUTTON_USER_Pin;

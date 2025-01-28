@@ -67,6 +67,10 @@ void Error_Handler(void);
 #define SS_GPIO_Port GPIOA
 #define PN532_RST_Pin GPIO_PIN_0
 #define PN532_RST_GPIO_Port GPIOB
+#define ADDR0_Pin GPIO_PIN_12
+#define ADDR0_GPIO_Port GPIOB
+#define ADDR1_Pin GPIO_PIN_13
+#define ADDR1_GPIO_Port GPIOB
 #define BUTTON_USER_Pin GPIO_PIN_8
 #define BUTTON_USER_GPIO_Port GPIOA
 #define PinX_Pin GPIO_PIN_3

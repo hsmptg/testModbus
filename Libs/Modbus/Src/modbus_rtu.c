@@ -8,11 +8,20 @@ uint8_t dataIndex;
 uint8_t dataLen;
 char ModbusRx[20];
 
+uint8_t slaveID;
 bool discreteInputs[N_DISCRETE_INPUTS];
 uint16_t inputRegisters[N_INPUT_REGISTERS];
 
 extern UART_HandleTypeDef huart2;
 extern TIM_HandleTypeDef htim3;
+
+void set_slaveID(void) {
+  slaveID = 1;
+  if (HAL_GPIO_ReadPin(ADDR1_GPIO_Port, ADDR1_Pin))
+    slaveID += 2;
+  if (HAL_GPIO_ReadPin(ADDR0_GPIO_Port, ADDR0_Pin))
+    slaveID += 1;
+}
 
 void getByte(void) {
   HAL_UART_Receive_IT(&huart2, &uartRxData, 1);
@@ -39,7 +48,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   switch (state) {
     case 0:
       dataIndex = 0;
-      if (uartRxData == SLAVE) {
+      if (uartRxData == slaveID) {
         ModbusRx[dataIndex++] = uartRxData;
         state = 1;
         getByte();
