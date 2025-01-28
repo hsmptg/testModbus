@@ -137,17 +137,21 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 1000);
-    if (uid_len == PN532_STATUS_ERROR) {
-      printf(".");
-    } else {
-      printf("Found card with UID: ");
-      for (uint8_t i = 0; i < uid_len; i++) {
-        printf("%02x ", uid[i]);
+    static uint32_t last = 0;
+    if (HAL_GetTick() - last > 1000) {
+      last = HAL_GetTick();
+
+      // 134ms no card - 75ms w/ card
+      uid_len = PN532_ReadPassiveTarget(&pn532, uid, PN532_MIFARE_ISO14443A, 100);
+      if (uid_len != PN532_STATUS_ERROR) {
+        printf("Found card with UID: ");
+        for (uint8_t i = 0; i < uid_len; i++) {
+          printf("%02x ", uid[i]);
+        }
+        inputRegisters[0] = (uid[0]<<8) + uid[1];
+        inputRegisters[1] = (uid[2]<<8) + uid[3];
+        printf("\r\n");
       }
-      inputRegisters[0] = (uid[0]<<8) + uid[1];
-      inputRegisters[1] = (uid[2]<<8) + uid[3];
-      printf("\r\n");
     }
 
     // if (HAL_GPIO_ReadPin(BUTTON_USER_GPIO_Port, BUTTON_USER_Pin))

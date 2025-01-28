@@ -69,9 +69,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         CRCValue = MODBUS_CRC16(ModbusRx, dataLen - 2);
 		    rxCRC = (ModbusRx[dataLen - 1] << 8) | (ModbusRx[dataLen - 2]);
         if(rxCRC == CRCValue) {
-          uint16_t addr = (ModbusRx[2]<<8) + ModbusRx[3];
-          uint16_t count = (ModbusRx[4]<<8) + ModbusRx[5]; 
-          sendReply(ModbusRx[0], ModbusRx[1], addr, count);
+          state = 3;
         }
         else {
           printf("Msg KO\r\n");
@@ -80,16 +78,21 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
       else
         getByte();
       break;
-    default:
-      ;
   }
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 	if (htim->Instance == TIM3) {
     HAL_TIM_Base_Stop_IT(htim);
-    state = 0;
-    getByte();
+    if (state == 3) {
+      uint16_t addr = (ModbusRx[2]<<8) + ModbusRx[3];
+      uint16_t count = (ModbusRx[4]<<8) + ModbusRx[5];
+      sendReply(ModbusRx[0], ModbusRx[1], addr, count);      
+    }
+    else {
+      state = 0;
+      getByte();
+    }
   }
 }
 
@@ -97,7 +100,11 @@ void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
 {
   UNUSED(huart);
 
-  HAL_GPIO_WritePin(RS485_DE_GPIO_Port, RS485_DE_Pin, GPIO_PIN_RESET);
+  modbus_init();
+
+  // HAL_GPIO_WritePin(RS485_DE_GPIO_Port, RS485_DE_Pin, GPIO_PIN_RESET);
+  // state = 0;
+  // getByte();
 }
 
 uint16_t MODBUS_CRC16(char *buf, uint8_t len)
