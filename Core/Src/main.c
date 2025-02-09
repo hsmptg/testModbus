@@ -162,7 +162,7 @@ int main(void)
         inputRegisters[2] = 0;
         inputRegisters[3] = 0;
         printf("\r\n");
-        start_sound();
+        // start_sound();
       }
     }
 
@@ -359,8 +359,6 @@ static void MX_TIM11_Init(void)
 
   /* USER CODE END TIM11_Init 0 */
 
-  TIM_OC_InitTypeDef sConfigOC = {0};
-
   /* USER CODE BEGIN TIM11_Init 1 */
 
   /* USER CODE END TIM11_Init 1 */
@@ -374,22 +372,9 @@ static void MX_TIM11_Init(void)
   {
     Error_Handler();
   }
-  if (HAL_TIM_PWM_Init(&htim11) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 500-1;
-  sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim11, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE BEGIN TIM11_Init 2 */
 
   /* USER CODE END TIM11_Init 2 */
-  HAL_TIM_MspPostInit(&htim11);
 
 }
 
@@ -477,25 +462,44 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(LED_USER_GPIO_Port, LED_USER_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, LED_USER_Pin|SPEAKER_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOA, RS485_DE_Pin|SS_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOA, PN532_RST_Pin|RS485_DE_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(PN532_RST_GPIO_Port, PN532_RST_Pin, GPIO_PIN_SET);
+  HAL_GPIO_WritePin(SS_GPIO_Port, SS_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pin : LED_USER_Pin */
-  GPIO_InitStruct.Pin = LED_USER_Pin;
+  /*Configure GPIO pins : LED_USER_Pin SPEAKER_Pin */
+  GPIO_InitStruct.Pin = LED_USER_Pin|SPEAKER_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(LED_USER_GPIO_Port, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : ADDR0_Pin */
+  GPIO_InitStruct.Pin = ADDR0_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(ADDR0_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PN532_RST_Pin */
+  GPIO_InitStruct.Pin = PN532_RST_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(PN532_RST_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PN532_IRQ_Pin */
+  GPIO_InitStruct.Pin = PN532_IRQ_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(PN532_IRQ_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : RS485_DE_Pin */
   GPIO_InitStruct.Pin = RS485_DE_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(RS485_DE_GPIO_Port, &GPIO_InitStruct);
 
@@ -506,24 +510,17 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
   HAL_GPIO_Init(SS_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pin : PN532_RST_Pin */
-  GPIO_InitStruct.Pin = PN532_RST_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(PN532_RST_GPIO_Port, &GPIO_InitStruct);
-
-  /*Configure GPIO pins : ADDR0_Pin ADDR1_Pin */
-  GPIO_InitStruct.Pin = ADDR0_Pin|ADDR1_Pin;
+  /*Configure GPIO pin : Pin6_Pin */
+  GPIO_InitStruct.Pin = Pin6_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Pin6_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pins : Pin5_Pin Pin4_Pin Pin3_Pin PinCon_Pin */
+  GPIO_InitStruct.Pin = Pin5_Pin|Pin4_Pin|Pin3_Pin|PinCon_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : BUTTON_USER_Pin */
-  GPIO_InitStruct.Pin = BUTTON_USER_Pin;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(BUTTON_USER_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pin : PinX_Pin */
   GPIO_InitStruct.Pin = PinX_Pin;
@@ -531,15 +528,15 @@ static void MX_GPIO_Init(void)
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(PinX_GPIO_Port, &GPIO_InitStruct);
 
-  /*Configure GPIO pins : Pin5_Pin Pin3_Pin Pin4_Pin Pin6_Pin */
-  GPIO_InitStruct.Pin = Pin5_Pin|Pin3_Pin|Pin4_Pin|Pin6_Pin;
+  /*Configure GPIO pin : ADDR1_Pin */
+  GPIO_InitStruct.Pin = ADDR1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(ADDR1_GPIO_Port, &GPIO_InitStruct);
 
   /* EXTI interrupt init*/
-  HAL_NVIC_SetPriority(EXTI3_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI3_IRQn);
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */

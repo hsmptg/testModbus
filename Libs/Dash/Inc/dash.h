@@ -5,7 +5,7 @@
 #include "stdbool.h"
 #include "modbus_rtu.h"
 
-#define UNUSED(x) (void)(x)
+// #define UNUSED(x) (void)(x)
 
 void cbRise();
 void cb500us(void);

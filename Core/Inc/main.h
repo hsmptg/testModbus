@@ -49,8 +49,6 @@ extern "C" {
 
 /* USER CODE END EM */
 
-void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
-
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
 
@@ -61,31 +59,33 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 #define LED_USER_Pin GPIO_PIN_13
 #define LED_USER_GPIO_Port GPIOC
-#define RS485_DE_Pin GPIO_PIN_1
-#define RS485_DE_GPIO_Port GPIOA
-#define SS_Pin GPIO_PIN_4
-#define SS_GPIO_Port GPIOA
+#define ADDR0_Pin GPIO_PIN_14
+#define ADDR0_GPIO_Port GPIOC
+#define SPEAKER_Pin GPIO_PIN_15
+#define SPEAKER_GPIO_Port GPIOC
 #define PN532_RST_Pin GPIO_PIN_0
-#define PN532_RST_GPIO_Port GPIOB
-#define ADDR0_Pin GPIO_PIN_12
-#define ADDR0_GPIO_Port GPIOB
-#define ADDR1_Pin GPIO_PIN_13
-#define ADDR1_GPIO_Port GPIOB
-#define BUTTON_USER_Pin GPIO_PIN_8
-#define BUTTON_USER_GPIO_Port GPIOA
-#define PinX_Pin GPIO_PIN_3
-#define PinX_GPIO_Port GPIOB
-#define PinX_EXTI_IRQn EXTI3_IRQn
+#define PN532_RST_GPIO_Port GPIOA
+#define PN532_IRQ_Pin GPIO_PIN_1
+#define PN532_IRQ_GPIO_Port GPIOA
+#define RS485_DE_Pin GPIO_PIN_4
+#define RS485_DE_GPIO_Port GPIOA
+#define SS_Pin GPIO_PIN_0
+#define SS_GPIO_Port GPIOB
+#define Pin6_Pin GPIO_PIN_15
+#define Pin6_GPIO_Port GPIOA
 #define Pin5_Pin GPIO_PIN_4
 #define Pin5_GPIO_Port GPIOB
-#define Pin3_Pin GPIO_PIN_5
-#define Pin3_GPIO_Port GPIOB
-#define Pin4_Pin GPIO_PIN_6
+#define Pin4_Pin GPIO_PIN_5
 #define Pin4_GPIO_Port GPIOB
-#define Pin6_Pin GPIO_PIN_7
-#define Pin6_GPIO_Port GPIOB
-#define SPEAKER_Pin GPIO_PIN_9
-#define SPEAKER_GPIO_Port GPIOB
+#define Pin3_Pin GPIO_PIN_6
+#define Pin3_GPIO_Port GPIOB
+#define PinCon_Pin GPIO_PIN_7
+#define PinCon_GPIO_Port GPIOB
+#define PinX_Pin GPIO_PIN_8
+#define PinX_GPIO_Port GPIOB
+#define PinX_EXTI_IRQn EXTI9_5_IRQn
+#define ADDR1_Pin GPIO_PIN_9
+#define ADDR1_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 

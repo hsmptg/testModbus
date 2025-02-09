@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "stdbool.h"
 
-#define UNUSED(x) (void)(x)
+// #define UNUSED(x) (void)(x)
 
 #define N_DISCRETE_INPUTS 1
 #define N_INPUT_REGISTERS 4
