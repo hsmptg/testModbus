@@ -54,7 +54,6 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_SOURCE_DIR}/Libs/RFID/Src/pn532.c    
     ${CMAKE_SOURCE_DIR}/Libs/Dash/Src/dash.c    
     ${CMAKE_SOURCE_DIR}/Libs/Util/Src/leds.c    
-    ${CMAKE_SOURCE_DIR}/Libs/Util/Src/sound.c    
 )
 
 # Add include paths

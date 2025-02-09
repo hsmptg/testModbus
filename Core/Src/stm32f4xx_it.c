@@ -192,7 +192,11 @@ void SysTick_Handler(void)
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
   leds_proc();
-  // sound_proc();
+  if (spk_cnt) {
+    spk_cnt--;
+    if (spk_cnt == 0)
+      HAL_GPIO_WritePin(SPEAKER_GPIO_Port, SPEAKER_Pin, false);
+  }
   /* USER CODE END SysTick_IRQn 1 */
 }
 

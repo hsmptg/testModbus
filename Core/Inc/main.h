@@ -36,7 +36,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
-
+extern uint16_t spk_cnt;
 /* USER CODE END ET */
 
 /* Exported constants --------------------------------------------------------*/
